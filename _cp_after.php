@@ -38,5 +38,13 @@ $new = serialize($new);
 $cpFile = fopen($filePath, 'w');
 fwrite ($cpFile, $new);
 fclose($cpFile);
-//printf('Скрипт выполнялся %.5F сек.', $cp_microtime_time);
+
+if (!is_file($_SERVER['DOCUMENT_ROOT'].'/_cp_init')){
+	$ini['time'] = time();
+	$ini = serialize($ini);
+	$iniFile = fopen ($_SERVER['DOCUMENT_ROOT'].'/_cp_init', 'w');
+	fwrite ($iniFile, $ini);
+	fclose ($iniFile);
+}
+
 ?>

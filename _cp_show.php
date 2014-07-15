@@ -5,6 +5,8 @@ define (index_file, '_index');
 class cp_show {
 
 	var $tree = array();
+	var $allCpTime = 0;
+	var $allTime = 0;
 	
 	public function cp_scan_dir($path, $up=0)
 	{
@@ -31,6 +33,13 @@ class cp_show {
 					$file['value'] = unserialize(file_get_contents($path.$files[$i]));
 					$res['files'][] = $file;
 					$this->tree[] = $file;
+					
+					$this->allCpTime += $file['value']['time'];
+					
+					// echo '<pre>';
+					// var_dump($path.$files[$i]);
+					// echo '</pre>';
+					// break;
 				}
 				else
 				{
@@ -53,7 +62,7 @@ class cp_show {
 
 }
 
-
+$ini = unserialize(file_get_contents ($_SERVER['DOCUMENT_ROOT'].'/_cp_init'));
 $cp_show = new cp_show;
 $tree = $cp_show->cp_scan_dir($_SERVER['DOCUMENT_ROOT'].'/'.log_url.'/');
 
@@ -73,6 +82,10 @@ $tree = $cp_show->cp_scan_dir($_SERVER['DOCUMENT_ROOT'].'/'.log_url.'/');
 		</style>
 	</head>
 	<body>
+		<div>
+			<p><b>Общее время тестирования:</b> <?php echo gmdate('H:i:s', time() - $ini['time']); ?></p>
+			<p><b>Суммарное время выполнения скриптов:</b> <?php echo number_format($cp_show->allCpTime, 3, '.', ' '); ?> сек.</p>
+		</div>
 		<table class="treeTable">
 			<tr>
 				<td>url</td>
