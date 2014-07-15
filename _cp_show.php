@@ -68,8 +68,11 @@ $tree = $cp_show->cp_scan_dir($_SERVER['DOCUMENT_ROOT'].'/'.log_url.'/');
 
 //$timezone = DateTime::getTimezone();
 //$date = new DateTime(null, new DateTimeZone('Europe/London'));
+//86400	//секунд в сутках
+//time() - $ini['time']	//время тестирования
+//$cp_show->allCpTime		//время выполнения скриптов
 
-
+$dayTime = 86400 / (time() - $ini['time']) * $cp_show->allCpTime;
 
 ?>
 <html>
@@ -84,7 +87,8 @@ $tree = $cp_show->cp_scan_dir($_SERVER['DOCUMENT_ROOT'].'/'.log_url.'/');
 	<body>
 		<div>
 			<p><b>Общее время тестирования:</b> <?php echo gmdate('H:i:s', time() - $ini['time']); ?></p>
-			<p><b>Суммарное время выполнения скриптов:</b> <?php echo number_format($cp_show->allCpTime, 3, '.', ' '); ?> сек.</p>
+			<p><b>Суммарное время выполнения скриптов:</b> <?php echo gmdate('H:i:s', $cp_show->allCpTime); ?> (<?php echo number_format($cp_show->allCpTime, 3, '.', ' '); ?> сек.)</p>
+			<p><b>Ориентировочное, суммарное время выполнения скриптов за сутки:</b> <?php echo gmdate('H:i:s', $dayTime); ?> (<?php echo number_format($dayTime, 3, '.', ' '); ?> сек.)</p>
 		</div>
 		<table class="treeTable">
 			<tr>
