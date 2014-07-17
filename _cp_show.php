@@ -2,6 +2,8 @@
 define (log_url, '_cp_test');
 define (index_file, '_index');
 
+header('Content-Type: text/html; charset=UTF-8');
+
 class cp_show {
 
 	var $tree = array();
@@ -68,9 +70,9 @@ $tree = $cp_show->cp_scan_dir($_SERVER['DOCUMENT_ROOT'].'/'.log_url.'/');
 
 //$timezone = DateTime::getTimezone();
 //$date = new DateTime(null, new DateTimeZone('Europe/London'));
-//86400	//секунд в сутках
-//time() - $ini['time']	//время тестирования
-//$cp_show->allCpTime		//время выполнения скриптов
+//86400	//СЃРµРєСѓРЅРґ РІ СЃСѓС‚РєР°С…
+//time() - $ini['time']	//РІСЂРµРјСЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ
+//$cp_show->allCpTime		//РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ СЃРєСЂРёРїС‚РѕРІ
 
 $dayTime = 86400 / (time() - $ini['time']) * $cp_show->allCpTime;
 
@@ -86,17 +88,18 @@ $dayTime = 86400 / (time() - $ini['time']) * $cp_show->allCpTime;
 	</head>
 	<body>
 		<div>
-			<p><b>Общее время тестирования:</b> <?php echo gmdate('H:i:s', time() - $ini['time']); ?></p>
-			<p><b>Суммарное время выполнения скриптов:</b> <?php echo gmdate('H:i:s', $cp_show->allCpTime); ?> (<?php echo number_format($cp_show->allCpTime, 3, '.', ' '); ?> сек.)</p>
-			<p><b>Ориентировочное, суммарное время выполнения скриптов за сутки:</b> <?php echo gmdate('H:i:s', $dayTime); ?> (<?php echo number_format($dayTime, 3, '.', ' '); ?> сек.)</p>
+			<p><b>РћР±С‰РµРµ РІСЂРµРјСЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ:</b> <?php echo gmdate('H:i:s', time() - $ini['time']); ?></p>
+			<p><b>РЎСѓРјРјР°СЂРЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ СЃРєСЂРёРїС‚РѕРІ:</b> <?php echo gmdate('H:i:s', $cp_show->allCpTime); ?> (<?php echo number_format($cp_show->allCpTime, 3, '.', ' '); ?> СЃРµРє.)</p>
+			<p><b>РћСЂРёРµРЅС‚РёСЂРѕРІРѕС‡РЅРѕРµ, СЃСѓРјРјР°СЂРЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ СЃРєСЂРёРїС‚РѕРІ Р·Р° СЃСѓС‚РєРё:</b> <?php echo gmdate('H:i:s', $dayTime); ?> (<?php echo number_format($dayTime, 3, '.', ' '); ?> СЃРµРє.)</p>
 		</div>
 		<table class="treeTable">
 			<tr>
 				<td>url</td>
-				<td>Посещений</td>
-				<td>Общее время</td>
-				<td>Макс. время</td>
-				<td>мин. время</td>
+				<td>РџРѕСЃРµС‰РµРЅРёР№</td>
+				<td>РћР±С‰РµРµ РІСЂРµРјСЏ</td>
+				<td>РњР°РєСЃ. РІСЂРµРјСЏ</td>
+				<td>РњРёРЅ. РІСЂРµРјСЏ</td>
+				<td>РЎСЂРµРґРЅ. РІСЂРµРјСЏ</td>
 			</tr>
 <?php
 foreach ($cp_show->tree as $branc){ ?>
@@ -106,6 +109,7 @@ foreach ($cp_show->tree as $branc){ ?>
 				<td align="right"><?php echo number_format ($branc['value']['time'], 3, '.', ' '); ?></td>
 				<td align="right"><?php echo number_format ($branc['value']['maxTime'], 3, '.', ' '); ?></td>
 				<td align="right"><?php echo number_format ($branc['value']['minTime'], 3, '.', ' '); ?></td>
+				<td align="right"><?php echo number_format ($branc['value']['time'] / $branc['value']['count'], 3, '.', ' '); ?></td>
 			</tr>
 <?php
 }
